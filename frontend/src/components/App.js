@@ -3,8 +3,6 @@ import { render } from "react-dom";
 import HomePage from './HomePage';
 
 
-
-
 export default class App extends Component {
     constructor(props) {
         super(props);
@@ -12,7 +10,7 @@ export default class App extends Component {
 
     render() {
         return (
-          <div>
+          <div className="center">
             <HomePage />
           </div>
         ); 
@@ -20,4 +18,4 @@ export default class App extends Component {
 }
 
 
-render(<App name="sim"/>, document.getElementById("app"));
+render(<App />, document.getElementById("app"));
