@@ -4,9 +4,11 @@ from .serializers import RoomSerializer, CreateRoomSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
+
 class RoomView(generics.ListAPIView):
     queryset = Room.objects.all()
     serializer_class = RoomSerializer
+
 
 class GetRoom(APIView):
     serializer_class = RoomSerializer
@@ -20,14 +22,15 @@ class GetRoom(APIView):
                 data = RoomSerializer(room[0]).data
                 data['is_host'] = self.request.session.session_key == room[0].host
                 return Response(data, status=status.HTTP_200_OK)
+
             return Response({'Room Not Found': 'Invalid Room Code.'}, status=status.HTTP_404_NOT_FOUND)
 
         return Response({'Bad request': 'Code paramter not found in request'}, status=status.HTTP_404_NOT_FOUND)
-    
+
 
 class CreateRoomView(APIView):
     serializer_class = CreateRoomSerializer
-    
+
     def post(self, request, format=None):
         if not self.request.session.exists(self.request.session.session_key):
             self.request.session.create()
@@ -44,9 +47,9 @@ class CreateRoomView(APIView):
                 room.votes_to_skip = votes_to_skip
                 room.save(update_fields=['guest_can_pasue', 'votes_to_skip'])
             else:
-                room = Room(host=host, guest_can_pasue=guest_can_pasue, votes_to_skip=votes_to_skip)
+                room = Room(host=host, guest_can_pasue=guest_can_pasue,
+                            votes_to_skip=votes_to_skip)
                 room.save()
             return Response(RoomSerializer(room).data, status=status.HTTP_201_CREATED)
 
         return Response()
-
