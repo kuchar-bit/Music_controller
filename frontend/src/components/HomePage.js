@@ -27,6 +27,7 @@ export default class HomePage extends Component {
         this.setState ({
           roomCode: data.code,
         });
+        
       });
   }
 
@@ -49,6 +50,7 @@ export default class HomePage extends Component {
           </ButtonGroup>
         </Grid>
       </Grid>
+      
     );
   }
 
