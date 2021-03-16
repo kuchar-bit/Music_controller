@@ -9,8 +9,8 @@ import { Link } from "react-router-dom";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import { FormLabel } from "@material-ui/core";
 import { Collapse } from "@material-ui/core";
+import  Alert  from "@material-ui/lab/Alert";
 
 export default class CreateRoomPage extends Component {
   static defaultProps = {
@@ -26,8 +26,8 @@ export default class CreateRoomPage extends Component {
     this.state = {
       guestCanPause: this.props.guestCanPause,
       votesToSkip: this.props.votesToSkip,
-      successMsg: "",
       errorMsg: "",
+      successMsg: "",
     };
 
     this.handleRoomButtonPressed = this.handleRoomButtonPressed.bind(this);
@@ -67,8 +67,8 @@ export default class CreateRoomPage extends Component {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        votesToSkip: this.state.votesToSkip,
-        guestCanPause: this.state.guestCanPause,
+        votes_to_skip: this.state.votesToSkip,
+        guest_can_pause: this.state.guestCanPause,
         code: this.props.roomCode,
       }),
     };
@@ -82,6 +82,7 @@ export default class CreateRoomPage extends Component {
           errorMsg: "Error updating room...",
         });
       }
+      this.props.updateCallback();
     });
   }
 
@@ -129,7 +130,29 @@ export default class CreateRoomPage extends Component {
           <Collapse
             in={this.state.errorMsg != "" || this.state.successMsg != ""}
           >
-            {this.state.successMsg}
+            {this.state.successMsg != "" ? (
+              <Alert
+                severity="success"
+                onClose={() => {
+                  this.setState({
+                    successMsg: "",
+                  });
+                }}
+              >
+                {this.state.successMsg}
+              </Alert>
+            ) : (
+              <Alert
+                severity="error"
+                onClose={() => {
+                  this.setState({
+                    errorMsg: "",
+                  });
+                }}
+              >
+                {this.state.errorMsg}
+              </Alert>
+            )}
           </Collapse>
         </Grid>
         <Grid item xs={12} align="center">

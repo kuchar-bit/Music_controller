@@ -11,12 +11,14 @@ export default class Room extends Component {
       isHost: false,
       showSettings: false,
     };
+
     this.roomCode = this.props.match.params.roomCode;
-    this.getRoomDetails = this.getRoomDetails.bind(this);
     this.leaveButtonPressed = this.leaveButtonPressed.bind(this);
     this.updateShowSettings = this.updateShowSettings.bind(this);
     this.renderSettingsButton = this.renderSettingsButton.bind(this);
     this.renderSettings = this.renderSettings.bind(this);
+    this.getRoomDetails = this.getRoomDetails.bind(this);
+    this.getRoomDetails();
   }
 
   getRoomDetails() {
@@ -55,19 +57,6 @@ export default class Room extends Component {
     });
   }
 
-  renderSettingsButton() {
-    return (
-      <Grid item xs={12} align="center">
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => this.updateShowSettings(true)}
-        >
-          Settings
-        </Button>
-      </Grid>
-    );
-  }
 
   renderSettings() {
     return (
@@ -78,7 +67,7 @@ export default class Room extends Component {
             votesToSkip={this.state.votesToSkip}
             guestCanPause={this.state.guestCanPause}
             roomCode={this.roomCode}
-            updateCallback={() => {}}
+            updateCallback={this.getRoomDetails}
           />
         </Grid>
         <Grid item xs={12} align="center">
@@ -90,6 +79,21 @@ export default class Room extends Component {
             Close Settings
           </Button>
         </Grid>
+      </Grid>
+    );
+  }
+
+  
+  renderSettingsButton() {
+    return (
+      <Grid item xs={12} align="center">
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => this.updateShowSettings(true)}
+        >
+          Settings
+        </Button>
       </Grid>
     );
   }
@@ -112,12 +116,12 @@ export default class Room extends Component {
         </Grid>
         <Grid item xs={12} align="center">
           <Typography variant="h6" component="h6">
-            Guest Can Pause: {this.state.guestCanPause}
+            Guest Can Pause: {this.state.guestCanPause.toString()}
           </Typography>
         </Grid>
         <Grid item xs={12} align="center">
           <Typography variant="h6" component="h6">
-            Host: {this.state.isHost}
+            Host: {this.state.isHost.toString()}
           </Typography>
         </Grid>
         {this.state.isHost ? this.renderSettingsButton() : null}
